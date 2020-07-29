@@ -1,15 +1,29 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <div class="flex flex-col justify-aropun items-center">
     <div class="items-center">
-      <p class="text-lg font-bold">Menu</p>
-      <p>Start</p>
-      <p>Quit</p>
+      <br />
+      <br />
+      <p class="text-lg text-white font-bold cursor-pointer" @click="startGame">Start</p>
+      <p class="text-lg text-white font-bold cursor-pointer" @click="quit">Quit</p>
     </div>
+    
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    startGame() {
+      this.$router.push("/game");
+    },
+    quit() {
+      this.$router.push("/");
+    }
+  }
+};
 </script>
 
 <style>

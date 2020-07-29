@@ -1,0 +1,114 @@
+<template>
+  <div class="h-full">
+    <div class="mb-base">
+      <p class="text-lg text-white">Coordinates Trainer</p>
+    </div>
+
+    <div id="board" class="board mb-base">
+      <div>
+        <div v-for="(row,r) in rows" :key="r" class="flex self-center">
+          <div v-for="(col,c) in columns" :key="c">
+            <div @click="logClick(col,row)" :class="returnColor(r,c)">
+              <div class="relative h-full">
+                <div class="absolute top-0 right-0 mr-1">
+                  <p v-if="c == 7" class="text-base font-bold" :class="returnTextColor(r)">{{row}}</p>
+                </div>
+                <div class="absolute bottom-0 left-0 ml-1">
+                  <p v-if="r == 7" class="text-base font-bold" :class="returnTextColor(c)">{{col}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="board">
+      <button class="inset-0" @click="backToMenu">
+        <p class="text-lg text-white">Back</p>
+      </button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  components: {},
+  data() {
+    return {
+      position: "black",
+      rowsList: ["8", "7", "6", "5", "4", "3", "2", "1"],
+      columnsList: ["a", "b", "c", "d", "e", "f", "g", "h"]
+    };
+  },
+  computed: {
+    rows() {
+      if (this.position == "white") {
+        return this.rowsList;
+      } else {
+        let rowsReverted = this.rowsList;
+        return rowsReverted.reverse();
+      }
+    },
+    columns() {
+      if (this.position == "white") {
+        return this.columnsList;
+      } else {
+        let rowsReverted = this.columnsList;
+        return rowsReverted.reverse();
+      }
+    }
+  },
+  methods: {
+    returnColor(row, column) {
+      let white = "white";
+      let black = "black";
+      if (this.position == "black") {
+        (white = "black"), (black = "white");
+      }
+      if (
+        (row % 2 == 0 && column % 2 == 0) ||
+        (row % 2 != 0 && column % 2 != 0)
+      ) {
+        return white;
+      } else return black;
+    },
+    returnTextColor(value) {
+      let white = "text-whiteSquare";
+      let black = "text-blackSquare";
+      if (this.position == "black") {
+        (white = "text-blackSquare"), (black = "text-whiteSquare");
+      }
+      if (value % 2 == 0) {
+        return white;
+      } else return black;
+    },
+    logClick(col, row) {
+      console.log(col, row);
+    },
+    backToMenu() {
+      this.$router.push("/");
+    }
+  }
+};
+</script>
+
+<style>
+.board {
+  display: grid;
+  place-items: center;
+}
+.black {
+  float: left;
+  width: 10vh;
+  height: 10vh;
+  background-color: #b58863;
+  display: table-cell;
+}
+.white {
+  float: left;
+  width: 10vh;
+  height: 10vh;
+  background-color: #f0d9b5;
+  display: table-cell;
+}
+</style>
