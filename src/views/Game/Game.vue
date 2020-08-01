@@ -11,10 +11,10 @@
             <div @click="logClick(col,row)" :class="returnColor(r,c)">
               <div class="relative h-full">
                 <div class="absolute top-0 right-0 mr-1">
-                  <p v-if="c == 7" class="text-base font-bold" :class="returnTextColor(r)">{{row}}</p>
+                  <p v-if="c == 7" class="text-base" :class="returnTextColor(r)">{{row}}</p>
                 </div>
                 <div class="absolute bottom-0 left-0 ml-1">
-                  <p v-if="r == 7" class="text-base font-bold" :class="returnTextColor(c)">{{col}}</p>
+                  <p v-if="r == 7" class="text-base" :class="returnTextColor(c)">{{col}}</p>
                 </div>
               </div>
             </div>
@@ -35,7 +35,7 @@ export default {
   components: {},
   data() {
     return {
-      position: "black",
+      position: "white",
       rowsList: ["8", "7", "6", "5", "4", "3", "2", "1"],
       columnsList: ["a", "b", "c", "d", "e", "f", "g", "h"]
     };
@@ -60,24 +60,16 @@ export default {
   },
   methods: {
     returnColor(row, column) {
-      let white = "white";
-      let black = "black";
-      if (this.position == "black") {
-        (white = "black"), (black = "white");
-      }
       if (
         (row % 2 == 0 && column % 2 == 0) ||
         (row % 2 != 0 && column % 2 != 0)
       ) {
-        return white;
-      } else return black;
+        return "white";
+      } else return "black";
     },
     returnTextColor(value) {
       let white = "text-whiteSquare";
       let black = "text-blackSquare";
-      if (this.position == "black") {
-        (white = "text-blackSquare"), (black = "text-whiteSquare");
-      }
       if (value % 2 == 0) {
         return white;
       } else return black;
