@@ -68,11 +68,9 @@ export default {
       } else return "black";
     },
     returnTextColor(value) {
-      let white = "text-whiteSquare";
-      let black = "text-blackSquare";
       if (value % 2 == 0) {
-        return white;
-      } else return black;
+        return "text-whiteSquare";
+      } else return "text-blackSquare";
     },
     logClick(col, row) {
       console.log(col, row);
@@ -80,6 +78,9 @@ export default {
     backToMenu() {
       this.$router.push("/");
     }
+  },
+  mounted(){
+    
   }
 };
 </script>

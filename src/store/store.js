@@ -8,9 +8,14 @@ import actions from "./actions"
 
 Vue.use(Vuex);
 
+import game from './game/game.js'
+
 export default new Vuex.Store({
   getters,
   mutations,
   state,
   actions,
+  modules: {
+    game: game
+  }
 });
