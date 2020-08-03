@@ -72,6 +72,7 @@ module.exports = {
       'blackSquare': '#b58863',
       'grey': '#b8c2cc',
       'grey-light': '#dae1e7',
+
     },
 
     /*

@@ -20,7 +20,11 @@ export default {
     startGame() {
       this.$router.push("/game");
     },
-    quit() {}
+    quit() {
+      this.$http.get("http://127.0.0.1:5000/get_test").then(res => {
+        console.log(res.data);
+      });
+    }
   }
 };
 </script>

@@ -2,13 +2,20 @@
   <div class="h-full">
     <div class="mb-base">
       <p class="text-lg text-white">Coordinates Trainer</p>
+      <div class="flex justify-center">
+        <div class="flex justify-center w-1/2 bg-whiteSquare h-10">
+          <button class="inset-0" @click="startGame">
+            <p class="text-lg text-red">Start Game</p>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div id="board" class="board mb-base">
       <div>
         <div v-for="(row,r) in rows" :key="r" class="flex self-center">
           <div v-for="(col,c) in columns" :key="c">
-            <div @click="logClick(col,row)" :class="returnColor(r,c)">
+            <div @click="getCoordinates(col,row)" :class="returnColor(r,c)">
               <div class="relative h-full">
                 <div class="absolute top-0 right-0 mr-1">
                   <p v-if="c == 7" class="text-base" :class="returnTextColor(r)">{{row}}</p>
@@ -37,7 +44,9 @@ export default {
     return {
       position: "white",
       rowsList: ["8", "7", "6", "5", "4", "3", "2", "1"],
-      columnsList: ["a", "b", "c", "d", "e", "f", "g", "h"]
+      columnsList: ["a", "b", "c", "d", "e", "f", "g", "h"],
+      gameCoordinates: "",
+      serverCoordinates: ""
     };
   },
   computed: {
@@ -72,16 +81,27 @@ export default {
         return "text-whiteSquare";
       } else return "text-blackSquare";
     },
-    logClick(col, row) {
-      console.log(col, row);
+    startGame() {
+      this.$http.get("http://127.0.0.1:5000/start_game").then(res => {
+        this.serverCoordinates = res.data.coordinates;
+      });
+    },
+    getCoordinates(col, row) {
+      let cooordinates = `${col}${row}`;
+      this.$http
+        .post("http://127.0.0.1:5000/coordinates", { coordinates: coordinates })
+        .then(res => {
+          if (res.isCorrect) {
+            this.serverCoordinates = res.data.coordinates;
+            //TODO
+          }
+        });
     },
     backToMenu() {
       this.$router.push("/");
     }
   },
-  mounted(){
-    
-  }
+  mounted() {}
 };
 </script>
 
