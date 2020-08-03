@@ -2,10 +2,18 @@
   <div class="h-full">
     <div class="mb-base">
       <p class="text-lg text-white">Coordinates Trainer</p>
-      <div class="flex justify-center">
-        <div class="flex justify-center w-1/2 bg-whiteSquare h-10">
-          <button class="inset-0" @click="startGame">
-            <p class="text-lg text-red">Start Game</p>
+      <div class="flex justify-center mt-3">
+        <div class="flex justify-center w-1/3 h-10">
+          <button
+            class="inset-0 bg-whiteSquare w-1/3 rounded"
+            :class="buttonDisabled ? 'cursor-default' : ''"
+            @click="startGame"
+            :disabled="buttonDisabled"
+          >
+            <p
+              class="text-lg"
+              :class="buttonDisabled ? 'text-black' : 'text-blackSquare'"
+            >Start Game</p>
           </button>
         </div>
       </div>
@@ -42,7 +50,9 @@ export default {
   components: {},
   data() {
     return {
-      position: "white",
+      buttonDisabled: false,
+      settings: { position: "white", time: 5 },
+      result: "",
       rowsList: ["8", "7", "6", "5", "4", "3", "2", "1"],
       columnsList: ["a", "b", "c", "d", "e", "f", "g", "h"],
       gameCoordinates: "",
@@ -51,7 +61,7 @@ export default {
   },
   computed: {
     rows() {
-      if (this.position == "white") {
+      if (this.settings.position == "white") {
         return this.rowsList;
       } else {
         let rowsReverted = this.rowsList;
@@ -59,7 +69,7 @@ export default {
       }
     },
     columns() {
-      if (this.position == "white") {
+      if (this.settings.position == "white") {
         return this.columnsList;
       } else {
         let rowsReverted = this.columnsList;
@@ -83,7 +93,24 @@ export default {
     },
     startGame() {
       this.$http.get("http://127.0.0.1:5000/start_game").then(res => {
+        this.buttonDisabled = true;
+        let time = this.settings.time;
+        this.startCountdown(time);
+        console.log(res);
         this.serverCoordinates = res.data.coordinates;
+      });
+    },
+    startCountdown(time) {
+      var ms = time * 1000;
+      setTimeout(() => {
+        this.endGame();
+      }, ms);
+    },
+    endGame() {
+      this.$http.get("http://127.0.0.1:5000/end_game").then(res => {
+        this.buttonDisabled = false;
+        this.result = res.data;
+        console.log(res);
       });
     },
     getCoordinates(col, row) {
